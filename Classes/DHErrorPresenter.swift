@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import PMAlertController
 
 public class DHErrorPresenter {
-    public static func add(viewController: UIViewController, error: Error, handler: ((UIAlertAction) -> Void)? = nil) {
-        let alert = UIAlertController(title: "Fehler".localized, message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Verstanden".localized, style: .default, handler: handler))
+    public static func add(viewController: UIViewController, error: Error, handler: (() -> Void)? = nil) {
+        let alert = PMAlertController(title: "Fehler".localized, description: error.localizedDescription, image: UIImage.fontAwesomeIcon(name: .exclamationTriangle, textColor: .red, size: CGSize(width: 192, height: 192)), style: .alert)
+        alert.addAction(PMAlertAction(title: "Verstanden".localized, style: .default, action: handler))
         DispatchQueue.main.async {
             viewController.present(alert, animated: true, completion: nil)
         }
     }
-    public static func add(viewController: UIViewController, error: String, handler: ((UIAlertAction) -> Void)? = nil) {
-        let alert = UIAlertController(title: "Fehler".localized, message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Verstanden".localized, style: .default, handler: handler))
+    public static func add(viewController: UIViewController, error: String, handler: (() -> Void)? = nil) {
+        let alert = PMAlertController(title: "Fehler".localized, description: error, image: UIImage.fontAwesomeIcon(name: .exclamationTriangle, textColor: .red, size: CGSize(width: 100, height: 100)), style: .alert)
+        alert.addAction(PMAlertAction(title: "Verstanden".localized, style: .default, action: handler))
         DispatchQueue.main.async {
             viewController.present(alert, animated: true, completion: nil)
         }
