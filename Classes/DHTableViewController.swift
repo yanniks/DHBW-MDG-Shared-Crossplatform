@@ -10,6 +10,7 @@
     import UIKit
     
     public class DHTableViewController: UITableViewController {
+        var tableViewSetup : UITableView! = nil
         var navigationTitle: String? = nil {
             didSet {
                 if let navigationTitle = navigationTitle {
@@ -19,10 +20,38 @@
                 }
             }
         }
-        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        public func runTableViewSetup() {
+            fatalError("Function must be overwritten")
+        }
+        override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return dhTableView(tableView as! DHTableView, numberOfRowsInSection: 0)
         }
-        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        override public init(style: UITableViewStyle) {
+            super.init(style: style)
+            tableView = DHTableView()
+            tableView.delegate = self
+            tableView.dataSource = self
+            viewDidLoad()
+        }
+        
+        override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            dhTableView(tableView as! DHTableView, didSelectRowAt: indexPath)
+        }
+        
+        override public init(nibName: String?, bundle: Bundle?) {
+            super.init(nibName: nil, bundle: nil)
+            tableView = DHTableView()
+            tableView.delegate = self
+            tableView.dataSource = self
+            viewDidLoad()
+        }
+        
+        required public init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             return dhTableView(tableView as! DHTableView, cellForRowAt: indexPath)
         }
     }
