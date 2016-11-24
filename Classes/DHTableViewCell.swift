@@ -9,11 +9,30 @@
 #if os(iOS)
     import UIKit
     
-    public enum DHTableViewCellStyle: UITableViewCellStyle {}
+    public enum DHTableViewCellStyle { case `default`, value1, value2, subtitle }
+    
+    extension DHTableViewCellStyle {
+        var uiStyle: UITableViewCellStyle {
+            switch self {
+            case .default:
+                return .default
+            case .value1:
+                return .value1
+            case .value2:
+                return .value2
+            case .subtitle:
+                return .subtitle
+            }
+        }
+    }
     
     public class DHTableViewCell: UITableViewCell {
         init(style: DHTableViewCellStyle, reuseIdentifier: String?) {
-            super.init(style: DHTableViewCellStyle as! UITableViewCellStyle, reuseIdentifer: reuseIdentifier)
+            super.init(style: style.uiStyle, reuseIdentifier: reuseIdentifier)
+        }
+        
+        required public init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
     }
 #elseif os(macOS)
