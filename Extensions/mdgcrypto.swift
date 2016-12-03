@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Yannik Ehlert. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SystemConfiguration
 
 public enum IJReachabilityType {
