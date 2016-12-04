@@ -24,7 +24,7 @@
             fatalError("Function must be overwritten")
         }
         override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return dhTableView(tableView as! DHTableView, numberOfRowsInSection: 0)
+            return dhTableView(tableView as! DHTableView, numberOfRowsInSection: section)
         }
         
         override public init(style: UITableViewStyle) {
@@ -33,6 +33,10 @@
             tableView.delegate = self
             tableView.dataSource = self
             viewDidLoad()
+        }
+        
+        override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+            return dhTableView(tableView, estimatedHeightForRowAt: indexPath)
         }
         
         override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -47,6 +51,10 @@
             viewDidLoad()
         }
         
+        override func numberOfSections(in tableView: UITableView) -> Int {
+            return numberOfSections(in: tableView as! DHTableView)
+        }
+        
         required public init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
@@ -57,9 +65,9 @@
     }
 #elseif os(OSX)
     import Cocoa
-    public class DHTableViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+    public class DHTableViewController: DHViewController, NSTableViewDataSource, NSTableViewDelegate {
         var tableViewSetup : NSTableView! = nil
-        var navigationTitle: String? = nil {
+        /*public var navigationTitle: String? = nil {
             didSet {
                 /*if view.window == nil { return }
                 if let navigationTitle = navigationTitle {
@@ -68,7 +76,7 @@
                     view.window?.title = ""
                 }*/
             }
-        }
+        }*/
         public func runTableViewSetup() {
             fatalError("Function must be overwritten")
         }
@@ -76,7 +84,15 @@
             super.viewDidLoad()
         }
         public func numberOfRows(in tableView: NSTableView) -> Int {
-            return dhTableView(tableView as! DHTableView, numberOfRowsInSection: 0)
+            let secs = numberOfSections(in: tableView as! DHTableView)
+            var count = 0
+            for sec in 1...secs {
+                count += dhTableView(tableView as! DHTableView, numberOfRowsInSection: sec - 1)
+                if let _ = dhTableView(tableView as! DHTableView, titleForHeaderInSection: sec - 1) {
+                    count += 1
+                }
+            }
+            return count
         }
         override public func viewWillAppear() {
             super.viewWillAppear()
@@ -84,8 +100,35 @@
             tableViewSetup.delegate = self
             tableViewSetup.dataSource = self
         }
+        public func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+            let indexPath = determineSection(tableView: tableView as! DHTableView, row: row)
+            if indexPath.row == -1 {
+                return 20
+            }
+            return dhTableView(tableView as! DHTableView, estimatedHeightForRowAt: indexPath)
+        }
+        private func determineSection(tableView: DHTableView, row: Int) -> IndexPath {
+            var rowsIncluded = 0
+            var section = -1
+            while (row + 1) > rowsIncluded  {
+                section += 1
+                rowsIncluded += dhTableView(tableView, numberOfRowsInSection: section)
+                if let _ = dhTableView(tableView, titleForHeaderInSection: section) {
+                    rowsIncluded += 1
+                }
+            }
+            let finalRow = row - rowsIncluded + dhTableView(tableView, numberOfRowsInSection: section)
+           return IndexPath(item: finalRow, section: section)
+        }
         public func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-            let baseCell = dhTableView(tableView as! DHTableView, cellForRowAt: IndexPath(item: row, section: 0))
+            let indexPath = determineSection(tableView: tableView as! DHTableView, row: row)
+            if indexPath.row == -1 {
+                return determineTitle(tableView: tableView as! DHTableView, section: indexPath.section)
+            }
+            if let originalCell = dhTableView(tableView as! DHTableView, originalCellForRowAt: indexPath) {
+                return originalCell
+            }
+            let baseCell = dhTableView(tableView as! DHTableView, cellForRowAt: indexPath)
             if baseCell.cellTitle == nil {
                 return nil
             }
@@ -117,6 +160,16 @@
             }
             return nil
         }
+        private func determineTitle(tableView: DHTableView, section: Int) -> NSView? {
+            guard let title = dhTableView(tableView, titleForHeaderInSection: section) else {
+                return nil
+            }
+            let cell = NSTextField()
+            cell.text = title
+            cell.font = NSFont.boldSystemFont(ofSize: 14)
+            cell.isBordered = false
+            return cell
+        }
         public func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
             dhTableView(tableView as! DHTableView, didSelectRowAt: IndexPath(item: row, section: 0))
             return true
@@ -133,8 +186,20 @@
 #endif
 
 public extension DHTableViewController {
+    func dhTableView(_ tableView: DHTableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
+    func dhTableView(_ tableView: DHTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 17.0
+    }
+    func numberOfSections(in tableView: DHTableView) -> Int {
+        return 1
+    }
     func dhTableView(_ tableView: DHTableView, numberOfRowsInSection section: Int) -> Int {
         return 0
+    }
+    func dhTableView(_ tableView: DHTableView, originalCellForRowAt indexPath: IndexPath) -> DHTableViewCell? {
+        return nil
     }
     func dhTableView(_ tableView: DHTableView, cellForRowAt indexPath: IndexPath) -> DHTableViewCell {
         return DHTableViewCell(style: .default, reuseIdentifier: nil)

@@ -6,18 +6,22 @@
 //  Copyright © 2016 Yannik Ehlert. All rights reserved.
 //
 
-import UIKit
-
-extension UIFont {
+#if os(iOS)
     
-    func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
-        let descriptor = self.fontDescriptor
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
-        return UIFont(descriptor: descriptor!, size: 0)
+    import UIKit
+    
+    extension UIFont {
+        
+        func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
+            let descriptor = self.fontDescriptor
+                .withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
+            return UIFont(descriptor: descriptor!, size: 0)
+        }
+        
+        var italic : UIFont {
+            return withTraits(traits: .traitItalic)
+        }
+        
     }
     
-    var italic : UIFont {
-        return withTraits(traits: .traitItalic)
-    }
-    
-}
+#endif

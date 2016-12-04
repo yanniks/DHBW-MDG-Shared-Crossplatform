@@ -9,8 +9,8 @@
 #if os(iOS)
     import UIKit
     
-    class DHViewController: UIViewController {
-        var navigationTitle: String? = nil {
+    public class DHViewController: UIViewController {
+        public var navigationTitle: String? = nil {
             didSet {
                 if let navigationTitle = navigationTitle {
                     navigationItem.title = navigationTitle
@@ -22,14 +22,14 @@
     }
 #elseif os(OSX)
     import Cocoa
-    class DHViewController: NSViewController {
-        var navigationTitle: String? = nil {
+    public class DHViewController: NSViewController {
+        public var navigationTitle: String? = nil {
             didSet {
-                if let navigationTitle = navigationTitle {
+                /*if let navigationTitle = navigationTitle {
                     view.window?.title = navigationTitle
                 } else {
                     view.window?.title = ""
-                }
+                }*/
             }
         }
     }
