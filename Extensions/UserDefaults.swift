@@ -14,7 +14,7 @@ import Foundation
 
 let def = UserDefaults()
 class UserDefaults : Foundation.UserDefaults {
-    internal static let def2 = Foundation.UserDefaults(suiteName: "group.dhbwdemo")!
+    internal static let def2 = Foundation.UserDefaults(suiteName: "group.dhbwstuttgart")!
     override func set(_ value: Any?, forKey defaultName: String) {
         UserDefaults.def2.set(value, forKey: defaultName)
         sendKey(defaultName)
