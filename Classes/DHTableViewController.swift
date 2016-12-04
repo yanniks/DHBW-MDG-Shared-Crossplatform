@@ -108,6 +108,9 @@
         @objc private func tvDoubleClicked() {
             dhTableView(tableViewSetup as! DHTableView, didSelectRowAt: determineSection(tableView: tableViewSetup as! DHTableView, row: tableViewSetup.selectedRow))
         }
+        public func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+            return determineSection(tableView: tableView as! DHTableView, row: row).row > -1
+        }
         public func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
             let indexPath = determineSection(tableView: tableView as! DHTableView, row: row)
             if indexPath.row == -1 {
