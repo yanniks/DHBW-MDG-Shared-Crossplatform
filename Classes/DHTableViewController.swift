@@ -101,8 +101,12 @@
         override public func viewWillAppear() {
             super.viewWillAppear()
             runTableViewSetup()
+            tableViewSetup.doubleAction = #selector(DHTableViewController.tvDoubleClicked)
             tableViewSetup.delegate = self
             tableViewSetup.dataSource = self
+        }
+        @objc private func tvDoubleClicked() {
+            dhTableView(tableViewSetup as! DHTableView, didSelectRowAt: determineSection(tableView: tableViewSetup as! DHTableView, row: tableViewSetup.selectedRow))
         }
         public func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
             let indexPath = determineSection(tableView: tableView as! DHTableView, row: row)
@@ -173,10 +177,6 @@
             cell.font = NSFont.boldSystemFont(ofSize: 14)
             cell.isBordered = false
             return cell
-        }
-        public func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-            dhTableView(tableView as! DHTableView, didSelectRowAt: IndexPath(item: row, section: 0))
-            return true
         }
         override init(nibName: String?, bundle: Bundle?) {
             super.init(nibName: nibName, bundle: bundle)!
