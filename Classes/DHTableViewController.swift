@@ -49,10 +49,9 @@
         
         override public init(nibName: String?, bundle: Bundle?) {
             super.init(nibName: nil, bundle: nil)
-            tableView = DHTableView()
+            tableView = DHTableView(frame: tableView.frame, style: tableView.style)
             tableView.delegate = self
             tableView.dataSource = self
-            viewDidLoad()
         }
         
         required public init?(coder aDecoder: NSCoder) {
