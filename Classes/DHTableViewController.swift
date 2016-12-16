@@ -33,10 +33,6 @@
         
         override public init(style: UITableViewStyle) {
             super.init(style: style)
-            tableView = DHTableView()
-            tableView.delegate = self
-            tableView.dataSource = self
-            //viewDidLoad()
         }
         
         override public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -47,11 +43,15 @@
             dhTableView(tableView as! DHTableView, didSelectRowAt: indexPath)
         }
         
+        override public func loadView() {
+            super.loadView()
+            if !(tableView is DHTableView) {
+                tableView = DHTableView()
+            }
+        }
+        
         override public init(nibName: String?, bundle: Bundle?) {
             super.init(nibName: nil, bundle: nil)
-            tableView = DHTableView(frame: tableView.frame, style: tableView.style)
-            tableView.delegate = self
-            tableView.dataSource = self
         }
         
         required public init?(coder aDecoder: NSCoder) {
@@ -82,9 +82,6 @@
         }*/
         public func runTableViewSetup() {
             fatalError("Function must be overwritten")
-        }
-        public override func viewDidLoad() {
-            super.viewDidLoad()
         }
         public func numberOfRows(in tableView: NSTableView) -> Int {
             let secs = numberOfSections(in: tableView as! DHTableView)
@@ -182,11 +179,9 @@
         }
         override init(nibName: String?, bundle: Bundle?) {
             super.init(nibName: nibName, bundle: bundle)!
-            viewDidLoad()
         }
         required public init?(coder: NSCoder) {
             super.init(coder: coder)
-            viewDidLoad()
         }
     }
 #endif
