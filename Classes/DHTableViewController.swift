@@ -191,7 +191,15 @@ public extension DHTableViewController {
         return nil
     }
     func dhTableView(_ tableView: DHTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 17.0
+        #if os(iOS)
+            if tableView.style == .grouped {
+                if dhTableView(tableView, numberOfRowsInSection: indexPath.section) == 1 {
+                    return 46.0
+                }
+                return 45.0
+            }
+        #endif
+        return 44.0
     }
     func numberOfSections(in tableView: DHTableView) -> Int {
         return 1
