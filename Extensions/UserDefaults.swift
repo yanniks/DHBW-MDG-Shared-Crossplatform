@@ -8,7 +8,9 @@
 
 import Foundation
 #if os(iOS)
-    import WatchConnectivity
+    #if DHMainApp
+        import WatchConnectivity
+    #endif
 #endif
     
 
@@ -91,15 +93,18 @@ class UserDefaults : Foundation.UserDefaults {
     }
     func sendKey(_ defaultName:String) {
         #if os(iOS)
-            if #available(iOS 9.0, *) {
-                var value: Any = "deleted"
-                if UserDefaults.def2.object(forKey: defaultName) != nil {
-                    value = UserDefaults.def2.object(forKey: defaultName)!
+            #if DHMainApp
+                if #available(iOS 9.0, *) {
+                    var value: Any = "deleted"
+                    if UserDefaults.def2.object(forKey: defaultName) != nil {
+                        value = UserDefaults.def2.object(forKey: defaultName)!
+                    }
+                    WCSession.default().transferUserInfo([defaultName:value])
                 }
-                WCSession.default().transferUserInfo([defaultName:value])
-            }
+            #endif
         #endif
     }
+    #if DHMainApp
     func sendAllKeys() {
         #if os(iOS)
             if #available(iOS 9.0, *) {
@@ -108,4 +113,5 @@ class UserDefaults : Foundation.UserDefaults {
             }
         #endif
     }
+    #endif
 }
