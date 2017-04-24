@@ -45,7 +45,7 @@
         
         override public func loadView() {
             super.loadView()
-            if !(tableView is DHTableView) {
+            if tableView == nil {
                 tableView = DHTableView()
             }
         }
@@ -56,10 +56,6 @@
         
         required public init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-        }
-        
-        override public func numberOfSections(in tableView: UITableView) -> Int {
-            return numberOfSections(in: tableView)
         }
         
         override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,6 +173,9 @@
             cell.isBordered = false
             return cell
         }
+        func numberOfSections(in tableView: DHTableView) -> Int {
+            return 1
+        }
         override init(nibName: String?, bundle: Bundle?) {
             super.init(nibName: nibName, bundle: bundle)!
         }
@@ -200,9 +199,6 @@ public extension DHTableViewController {
             }
         #endif
         return 44.0
-    }
-    func numberOfSections(in tableView: DHTableView) -> Int {
-        return 1
     }
     func dhTableView(_ tableView: DHTableView, numberOfRowsInSection section: Int) -> Int {
         return 0
