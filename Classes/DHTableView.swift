@@ -9,13 +9,9 @@
 #if os(iOS)
     import UIKit
     
-    public class DHTableView: UITableView {
-        
-    }
+    public typealias DHTableView = UITableView
 #elseif os(macOS)
     import Cocoa
     
-    public class DHTableView: NSTableView {
-        
-    }
+    public typealias DHTableView = NSTableView
 #endif

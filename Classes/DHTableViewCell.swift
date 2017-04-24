@@ -9,32 +9,8 @@
 #if os(iOS)
     import UIKit
     
-    public enum DHTableViewCellStyle { case `default`, value1, value2, subtitle }
-    
-    extension DHTableViewCellStyle {
-        var uiStyle: UITableViewCellStyle {
-            switch self {
-            case .default:
-                return .default
-            case .value1:
-                return .value1
-            case .value2:
-                return .value2
-            case .subtitle:
-                return .subtitle
-            }
-        }
-    }
-    
-    public class DHTableViewCell: UITableViewCell {
-        init(style: DHTableViewCellStyle, reuseIdentifier: String?) {
-            super.init(style: style.uiStyle, reuseIdentifier: reuseIdentifier)
-        }
-        
-        required public init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-        }
-    }
+    public typealias DHTableViewCellStyle = UITableViewCellStyle
+    public typealias DHTableViewCell = UITableViewCell
 #elseif os(macOS)
     import Cocoa
     
