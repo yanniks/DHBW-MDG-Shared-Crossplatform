@@ -10,6 +10,6 @@ import UIKit
 
 extension UITextField {
     func placeholderColor(_ color:UIColor) {
-        self.attributedPlaceholder = NSAttributedString(string:self.placeholder!, attributes: [NSForegroundColorAttributeName: color])
+        self.attributedPlaceholder = NSAttributedString(string:self.placeholder!, attributes: [NSAttributedStringKey.foregroundColor: color])
     }
 }

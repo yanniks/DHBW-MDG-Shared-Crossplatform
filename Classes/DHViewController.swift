@@ -10,7 +10,7 @@
     import UIKit
     
     public class DHViewController: UIViewController {
-        public var navigationTitle: String? = nil {
+        @objc public var navigationTitle: String? = nil {
             didSet {
                 if let navigationTitle = navigationTitle {
                     navigationItem.title = navigationTitle

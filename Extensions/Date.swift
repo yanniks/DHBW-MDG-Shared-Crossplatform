@@ -21,4 +21,23 @@ public extension Date {
         
         return Calendar.current.date(from: dateComponentCompare1)!.timeIntervalSince1970.isLess(than: Calendar.current.date(from: dateComponentCompare2)!.timeIntervalSince1970)
     }
+    
+    var localTimeFormat: String {
+        let dfout = DateFormatter()
+        dfout.dateStyle = .none
+        dfout.timeStyle = .short
+        return dfout.string(from: self)
+    }
+}
+
+public extension String {
+    func isoDateStringToDate() -> Date? {
+        let df = ISO8601DateFormatter()
+        return  df.date(from: self)
+    }
+    
+    @available(*, deprecated)
+    func isoDateStringToLocalTime() -> String {
+        return isoDateStringToDate()!.localTimeFormat
+    }
 }

@@ -19,35 +19,28 @@ class UserDefaults : Foundation.UserDefaults {
     #if MDGApp
     internal static let def2 = Foundation.UserDefaults(suiteName: "group.yanniks.mdgnienburgprefs")!
     #elseif DHBWApp
-    internal static let def2 = Foundation.UserDefaults(suiteName: "group.dhbwstuttgart")!
+    @objc internal static let def2 = Foundation.UserDefaults(suiteName: "group.dhbwstuttgart")!
     #endif
     override func set(_ value: Any?, forKey defaultName: String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func set(_ value:Bool, forKey defaultName: String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func set(_ value:Float,forKey defaultName:String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func set(_ value:Int, forKey defaultName:String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func set(_ value:Double, forKey defaultName:String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func set(_ value:URL?, forKey defaultName:String) {
         UserDefaults.def2.set(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func setValue(_ value:Any?,forKey defaultName:String) {
         UserDefaults.def2.setValue(value, forKey: defaultName)
-        sendKey(defaultName)
     }
     override func synchronize() -> Bool {
         return UserDefaults.def2.synchronize()
@@ -93,29 +86,5 @@ class UserDefaults : Foundation.UserDefaults {
     }
     override func removeObject(forKey defaultName:String) {
         UserDefaults.def2.removeObject(forKey: defaultName)
-        sendKey(defaultName)
     }
-    func sendKey(_ defaultName:String) {
-        #if os(iOS)
-            #if DHMainApp
-                if #available(iOS 9.0, *) {
-                    var value: Any = "deleted"
-                    if UserDefaults.def2.object(forKey: defaultName) != nil {
-                        value = UserDefaults.def2.object(forKey: defaultName)!
-                    }
-                    WCSession.default().transferUserInfo([defaultName:value])
-                }
-            #endif
-        #endif
-    }
-    #if DHMainApp
-    func sendAllKeys() {
-        #if os(iOS)
-            if #available(iOS 9.0, *) {
-                let uinfo = UserDefaults.def2.dictionaryRepresentation()
-                WCSession.default().transferUserInfo(uinfo)
-            }
-        #endif
-    }
-    #endif
 }

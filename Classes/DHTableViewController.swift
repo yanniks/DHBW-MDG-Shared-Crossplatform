@@ -11,7 +11,7 @@
     
     public class DHTableViewController: UITableViewController {
         var tableViewSetup : UITableView! = nil
-        var navigationTitle: String? = nil {
+        /*var navigationTitle: String? = nil {
             didSet {
                 if let navigationTitle = navigationTitle {
                     navigationItem.title = navigationTitle
@@ -60,7 +60,7 @@
         
         override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             return dhTableView(tableView, cellForRowAt: indexPath)
-        }
+        }*/
     }
 #elseif os(OSX)
     import Cocoa
@@ -182,34 +182,32 @@
         required public init?(coder: NSCoder) {
             super.init(coder: coder)
         }
+        
+        func dhTableView(_ tableView: DHTableView, titleForHeaderInSection section: Int) -> String? {
+            return nil
+        }
+        func dhTableView(_ tableView: DHTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+            #if os(iOS)
+                if tableView.style == .grouped {
+                    if dhTableView(tableView, numberOfRowsInSection: indexPath.section) == 1 {
+                        return 46.0
+                    }
+                    return 45.0
+                }
+            #endif
+            return 44.0
+        }
+        func dhTableView(_ tableView: DHTableView, numberOfRowsInSection section: Int) -> Int {
+            return 0
+        }
+        func dhTableView(_ tableView: DHTableView, originalCellForRowAt indexPath: IndexPath) -> DHTableViewCell? {
+            return nil
+        }
+        func dhTableView(_ tableView: DHTableView, cellForRowAt indexPath: IndexPath) -> DHTableViewCell {
+            return DHTableViewCell(style: .default, reuseIdentifier: nil)
+        }
+        func dhTableView(_ tableView: DHTableView, didSelectRowAt indexPath: IndexPath) {
+            
+        }
     }
 #endif
-
-public extension DHTableViewController {
-    func dhTableView(_ tableView: DHTableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-    }
-    func dhTableView(_ tableView: DHTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        #if os(iOS)
-            if tableView.style == .grouped {
-                if dhTableView(tableView, numberOfRowsInSection: indexPath.section) == 1 {
-                    return 46.0
-                }
-                return 45.0
-            }
-        #endif
-        return 44.0
-    }
-    func dhTableView(_ tableView: DHTableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
-    func dhTableView(_ tableView: DHTableView, originalCellForRowAt indexPath: IndexPath) -> DHTableViewCell? {
-        return nil
-    }
-    func dhTableView(_ tableView: DHTableView, cellForRowAt indexPath: IndexPath) -> DHTableViewCell {
-        return DHTableViewCell(style: .default, reuseIdentifier: nil)
-    }
-    func dhTableView(_ tableView: DHTableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-}
